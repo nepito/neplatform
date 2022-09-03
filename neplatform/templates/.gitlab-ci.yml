@@ -1,0 +1,42 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+  - check
+  - test
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  LATEST_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+before_script:
+  - docker login --username gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
+
+build:
+  stage: build
+  script:
+    - docker build --pull --tag $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+check:
+  stage: check
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE make check
+
+test:
+  stage: test
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE make tests
+
+build_latest:
+  stage: build
+  script:
+    - docker build --pull --tag $LATEST_IMAGE .
+    - docker push $LATEST_IMAGE
+  only:
+    - develop

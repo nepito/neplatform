@@ -9,6 +9,7 @@ fileLoader = FileSystemLoader("neplatform/templates/")
 env = Environment(loader=fileLoader)
 
 TAG = {"main": "stable", "develop": "latest"}
+PIPELINE = {"github": "main.yml", "gitlab": ".gitlab-ci.yml"}
 
 
 @app.command()
@@ -23,11 +24,12 @@ def dc(repo=""):
 
 
 @app.command()
-def am(repo="", branch="develop"):
+def am(repo="", branch="develop", hub="github"):
     """
     actions main
     """
-    rendered = env.get_template("main.yml").render(
+    template = PIPELINE[hub]
+    rendered = env.get_template(template).render(
         repo=repo,
         branch=branch,
         tag=TAG[branch],

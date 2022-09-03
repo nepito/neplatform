@@ -1,4 +1,4 @@
-FROM python:3
+FROM islasgeci/base:latest
 WORKDIR /workdir
 COPY . .
 RUN pip install --upgrade pip && pip install \

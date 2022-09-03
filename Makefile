@@ -12,7 +12,7 @@ all: check coverage mutants
 		tests
 
 module = neplatform
-codecov_token = 6c56bccb-1758-4ed9-8161-97c845591c26
+codecov_token = 3501802a-54c1-4a7a-aeb5-2e30826d8e6c
 
 define lint
 	pylint \
@@ -25,8 +25,10 @@ endef
 
 check:
 	black --check --line-length 100 ${module}
+	black --check --line-length 100 src
 	black --check --line-length 100 tests
 	flake8 --max-line-length 100 ${module}
+	flake8 --max-line-length 100 src
 	flake8 --max-line-length 100 tests
 	mypy ${module}
 	mypy tests
@@ -47,6 +49,8 @@ format:
 	black --line-length 100 ${module}
 	black --line-length 100 src
 	black --line-length 100 tests
+
+init: setup tests
 
 linter:
 	$(call lint, ${module})

@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  nies:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: {{repo}}
+    command: bash
+    ports:
+      - 5040:5000
+    volumes:
+      - $PWD:/workdir

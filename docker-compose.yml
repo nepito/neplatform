@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  nies:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: neplatform
+    command: bash
+    volumes:
+      - $PWD:/workdir

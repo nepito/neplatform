@@ -8,7 +8,8 @@ app = typer.Typer()
 fileLoader = FileSystemLoader("neplatform/templates/")
 env = Environment(loader=fileLoader)
 
-TAG ={"main": "stable", "develop": "latest"}
+TAG = {"main": "stable", "develop": "latest"}
+
 
 @app.command()
 def dc(repo=""):
@@ -28,8 +29,8 @@ def am(repo="", branch="develop"):
     """
     rendered = env.get_template("main.yml").render(
         repo=repo,
-	branch=branch,
-	tag=TAG[branch]
+        branch=branch,
+        tag=TAG[branch],
     )
     print(rendered)
 
